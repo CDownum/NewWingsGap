@@ -1,37 +1,41 @@
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Serialization;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add service defaults & Aspire client integrations.
-builder.AddServiceDefaults();
-
-// Add services to the container.
-builder.Services.AddProblemDetails();
-
-// Register the DbContext with SQL Server
-builder.Services.AddDbContext<WeatherContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("database")));
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-app.UseExceptionHandler();
-
-string[] summaries = ["Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"];
-
-app.MapGet("/weatherforecast", async () =>
+public class Program
 {
-    using (var scope = app.Services.CreateScope())
+    public static void Main(string[] args)
     {
-        var context = scope.ServiceProvider.GetRequiredService<WeatherContext>();
-        context.Database.EnsureCreated();
+        var builder = WebApplication.CreateBuilder(args);
 
-        var blogs = await context.WeatherForecasts.ToListAsync();
+        builder.Services.AddControllers().AddNewtonsoftJson(options =>
+        {
+            options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+            options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+        });
 
-        return blogs;
+        builder.Services.AddDbContext<NewWingsGapContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("database")));
+
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+        
+        builder.AddServiceDefaults();
+
+        // Add services to the container.
+        builder.Services.AddProblemDetails();
+
+        var app = builder.Build();
+
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+
+        app.UseHttpsRedirection();
+        app.UseExceptionHandler();
+        app.MapControllers();
+
+        app.Run();
     }
-})
-.WithName("GetWeatherForecast");
-
-app.MapDefaultEndpoints();
-app.Run();
+}

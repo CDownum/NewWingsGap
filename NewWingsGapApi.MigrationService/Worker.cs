@@ -21,7 +21,7 @@ public class Worker(
         try
         {
             using var scope = serviceProvider.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<WeatherContext>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<NewWingsGapContext>();
 
             await EnsureDatabaseAsync(dbContext, cancellationToken);
             await RunMigrationAsync(dbContext, cancellationToken);
@@ -36,7 +36,7 @@ public class Worker(
         hostApplicationLifetime.StopApplication();
     }
 
-    private static async Task EnsureDatabaseAsync(WeatherContext dbContext, CancellationToken cancellationToken)
+    private static async Task EnsureDatabaseAsync(NewWingsGapContext dbContext, CancellationToken cancellationToken)
     {
         var dbCreator = dbContext.GetService<IRelationalDatabaseCreator>();
 
@@ -52,7 +52,7 @@ public class Worker(
         });
     }
 
-    private static async Task RunMigrationAsync(WeatherContext dbContext, CancellationToken cancellationToken)
+    private static async Task RunMigrationAsync(NewWingsGapContext dbContext, CancellationToken cancellationToken)
     {
         var strategy = dbContext.Database.CreateExecutionStrategy();
         await strategy.ExecuteAsync(async () =>
@@ -64,13 +64,40 @@ public class Worker(
         });
     }
 
-    private static async Task SeedDataAsync(WeatherContext dbContext, CancellationToken cancellationToken)
+    private static async Task SeedDataAsync(NewWingsGapContext dbContext, CancellationToken cancellationToken)
     {
-        WeatherForecast weather = new()
+        User user = new()
         {
-            Date = DateOnly.FromDateTime(DateTime.Now),
-            TemperatureC = 20,
-            Summary = "Warm"
+            Role = NewWingsGap.Data.Enums.Role.Admin,
+            StartDate = DateTime.Now,
+            FirstName = "Charles",
+            MiddleName = "Michael",
+            LastName = "Downum",
+            GrossAnnualIncome = 100000
+        };
+
+        Budget budget = new()
+        {
+            User = user,
+            Year = DateTime.Now.Year,
+            HealthCareContribution = 1000,
+            FourO1KContribution = 1000
+        };
+
+        BudgetItem budgetItem = new()
+        {
+            Amount = 1000,
+            Description = "Emergency Fund",
+            LastModified = DateTime.Now,
+            Budget = budget
+        };
+
+        BudgetGoal budgetGoal = new()
+        {
+            Amount = 1000,
+            Description = "Emergency Fund",
+            LastModified = DateTime.Now,
+            Budget = budget
         };
 
         var strategy = dbContext.Database.CreateExecutionStrategy();
@@ -78,7 +105,10 @@ public class Worker(
         {
             // Seed the database
             await using var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
-            await dbContext.WeatherForecasts.AddAsync(weather, cancellationToken);
+            await dbContext.Users.AddAsync(user, cancellationToken);
+            await dbContext.Budgets!.AddAsync(budget, cancellationToken);
+            await dbContext.BudgetItems!.AddAsync(budgetItem, cancellationToken);
+            await dbContext.BudgetGoals!.AddAsync(budgetGoal, cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
             await transaction.CommitAsync(cancellationToken);
         });

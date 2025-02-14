@@ -8,7 +8,7 @@ builder.Services.AddHostedService<Worker>();
 builder.Services.AddOpenTelemetry()
     .WithTracing(tracing => tracing.AddSource(Worker.ActivitySourceName));
 
-builder.AddSqlServerDbContext<WeatherContext>("database");
+builder.AddSqlServerDbContext<NewWingsGapContext>("database");
 
 var host = builder.Build();
 host.Run();
