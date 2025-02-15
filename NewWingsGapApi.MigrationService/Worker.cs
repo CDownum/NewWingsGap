@@ -106,9 +106,9 @@ public class Worker(
             // Seed the database
             await using var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
             await dbContext.Users.AddAsync(user, cancellationToken);
-            await dbContext.Budgets!.AddAsync(budget, cancellationToken);
-            await dbContext.BudgetItems!.AddAsync(budgetItem, cancellationToken);
-            await dbContext.BudgetGoals!.AddAsync(budgetGoal, cancellationToken);
+            //await dbContext.Budgets!.AddAsync(budget, cancellationToken);
+            //await dbContext.BudgetItems!.AddAsync(budgetItem, cancellationToken);
+            //await dbContext.BudgetGoals!.AddAsync(budgetGoal, cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
             await transaction.CommitAsync(cancellationToken);
         });

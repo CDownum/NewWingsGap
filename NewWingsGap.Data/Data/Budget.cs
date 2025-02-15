@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 [Table("Budgets")]
 public class Budget
 {
+    [Key]
     public int Id { get; set; }
 
     [Required]

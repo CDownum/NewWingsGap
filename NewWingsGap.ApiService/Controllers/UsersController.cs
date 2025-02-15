@@ -18,6 +18,8 @@ namespace NewWingsGap.ApiService.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
+            var result =  _context.Database.CanConnect();
+            var r = _context.Database.GetDbConnection(); 
             return await _context.Users.ToListAsync();
         }
 

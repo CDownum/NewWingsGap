@@ -14,7 +14,8 @@ public class Program
         });
 
         builder.Services.AddDbContext<NewWingsGapContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("database")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+            .LogTo(Console.WriteLine, LogLevel.Information));
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();

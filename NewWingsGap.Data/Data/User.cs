@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 [Table("Users")]
 public class User
 {
+    [Key]
     public int Id { get; set; }
 
     [Required]
