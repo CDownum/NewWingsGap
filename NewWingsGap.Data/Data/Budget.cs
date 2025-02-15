@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,7 +8,7 @@ public class Budget
     [Key]
     public int Id { get; set; }
 
-    [Required]
+    [JsonIgnore]
     public required User User { get; set; }
 
     [Required]
@@ -23,7 +24,7 @@ public class Budget
     public List<BudgetGoal>? BudgetGoals { get; set; }
 
     [NotMapped]
-    public decimal TaxableIncome => User.GrossAnnualIncome - FourO1KContribution - HealthCareContribution;
+    public decimal TaxableIncome => (User == null ? 0m : User.GrossAnnualIncome) - FourO1KContribution - HealthCareContribution;
 
     [NotMapped]
     public decimal NetAnnualIncome =>

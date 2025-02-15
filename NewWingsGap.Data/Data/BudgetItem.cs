@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -17,5 +18,6 @@ public class BudgetItem
     public DateTime LastModified { get; set; }
 
     [Required]
+    [JsonIgnore]
     public required Budget Budget { get; set; }
 }
