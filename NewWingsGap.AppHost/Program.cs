@@ -2,7 +2,8 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 var cache = builder.AddRedis("cache");
 
-var sql = builder.AddSqlServer("sql")
+var sql = builder.AddSqlServer("sql", port: 52105)
+                 .WithDataVolume()
                  .WithLifetime(ContainerLifetime.Persistent);
 
 var db = sql.AddDatabase("database");
@@ -19,6 +20,7 @@ builder.AddProject<Projects.NewWingsGap_Web>("webfrontend")
     .WaitFor(apiService);
 
 builder.AddProject<Projects.NewWingsGap_MigrationService>("wingsgap-migrationservice")
-    .WithReference(sql);
+    .WithReference(sql)
+    .WaitFor(db);
 
 builder.Build().Run();

@@ -83,21 +83,145 @@ public class Worker(
             HealthCareContribution = 1000,
             FourO1KContribution = 1000
         };
-
-        BudgetItem budgetItem = new()
+        
+        var budgetItems = new List<BudgetItem>
         {
-            Amount = 1000,
-            Description = "Emergency Fund",
-            LastModified = DateTime.Now,
-            Budget = budget
+            new() {
+                Amount = 2000,
+                Description = "Mortgate Payment",
+                LastModified = DateTime.Now,
+                Budget = budget
+            },
+            new() {
+                Amount = 800,
+                Description = "Utilities",
+                LastModified = DateTime.Now,
+                Budget = budget
+            },
+            new() {
+                Amount = 150,
+                Description = "Home Repair / Maintainence",
+                LastModified = DateTime.Now,
+                Budget = budget
+            },
+            new() {
+                Amount = 750,
+                Description = "Auto Loan(s)",
+                LastModified = DateTime.Now,
+                Budget = budget
+            },
+            new() {
+                Amount = 800,
+                Description = "Utilities",
+                LastModified = DateTime.Now,
+                Budget = budget
+            },
+            new() {
+                Amount = 100,
+                Description = "Auto Repair / Maintainence",
+                LastModified = DateTime.Now,
+                Budget = budget
+            },
+            new() {
+                Amount = 100,
+                Description = "Auto Insurance",
+                LastModified = DateTime.Now,
+                Budget = budget
+            },
+            new() {
+                Amount = 300,
+                Description = "Fuel / Transporation",
+                LastModified = DateTime.Now,
+                Budget = budget
+            },
+            new() {
+                Amount = 200,
+                Description = "Communication",
+                LastModified = DateTime.Now,
+                Budget = budget
+            }            ,
+            new() {
+                Amount = 1000,
+                Description = "Grocery",
+                LastModified = DateTime.Now,
+                Budget = budget
+            },
+            new() {
+                Amount = 900,
+                Description = "Dining / Entertainment",
+                LastModified = DateTime.Now,
+                Budget = budget
+            },
+            new() {
+                Amount = 200,
+                Description = "School",
+                LastModified = DateTime.Now,
+                Budget = budget
+            },
+            new() {
+                Amount = 400,
+                Description = "Clothing",
+                LastModified = DateTime.Now,
+                Budget = budget
+            },
+            new() {
+                Amount = 50,
+                Description = "Perscriptions / Medical Co-pay",
+                LastModified = DateTime.Now,
+                Budget = budget
+            },
+            new() {
+                Amount = 200,
+                Description = "Credit Cards",
+                LastModified = DateTime.Now,
+                Budget = budget
+            },
+            new() {
+                Amount = 200,
+                Description = "Memberships",
+                LastModified = DateTime.Now,
+                Budget = budget
+            },
+            new() {
+                Amount = 50,
+                Description = "Gifts",
+                LastModified = DateTime.Now,
+                Budget = budget
+            },
+            new() {
+                Amount = 200,
+                Description = "Charity",
+                LastModified = DateTime.Now,
+                Budget = budget
+            }
         };
 
-        BudgetGoal budgetGoal = new()
+        var budgetGoals = new List<BudgetGoal>()
         {
-            Amount = 1000,
-            Description = "Emergency Fund",
-            LastModified = DateTime.Now,
-            Budget = budget
+            new() {
+                Amount = 12000,
+                Description = "College For Kids",
+                LastModified = DateTime.Now,
+                Budget = budget
+            },
+            new() {
+                Amount = 7500,
+                Description = "Vacation",
+                LastModified = DateTime.Now,
+                Budget = budget
+            },
+            new() {
+                Amount = 17500,
+                Description = "Remodeling",
+                LastModified = DateTime.Now,
+                Budget = budget
+            },
+            new() {
+                Amount = 6000,
+                Description = "Additional Savings",
+                LastModified = DateTime.Now,
+                Budget = budget
+            },
         };
 
         var strategy = dbContext.Database.CreateExecutionStrategy();
@@ -106,9 +230,18 @@ public class Worker(
             // Seed the database
             await using var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
             await dbContext.Users.AddAsync(user, cancellationToken);
-            //await dbContext.Budgets!.AddAsync(budget, cancellationToken);
-            //await dbContext.BudgetItems!.AddAsync(budgetItem, cancellationToken);
-            //await dbContext.BudgetGoals!.AddAsync(budgetGoal, cancellationToken);
+            await dbContext.Budgets!.AddAsync(budget, cancellationToken);
+
+            foreach(var budgetItem in budgetItems)
+            {
+                await dbContext.BudgetItems!.AddAsync(budgetItem, cancellationToken);
+            }
+
+            foreach (var budgetGoal in budgetGoals)
+            {
+                await dbContext.BudgetGoals!.AddAsync(budgetGoal, cancellationToken);
+            }
+
             await dbContext.SaveChangesAsync(cancellationToken);
             await transaction.CommitAsync(cancellationToken);
         });

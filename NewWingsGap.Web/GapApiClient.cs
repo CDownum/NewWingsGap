@@ -52,13 +52,12 @@ public class Budget
     public List<BudgetGoal>? BudgetGoals { get; set; }
     public decimal TaxableIncome;
     public decimal NetAnnualIncome;
-    public decimal FederalTax;
+    public string FederalTax;
     public decimal StateTax;
     public decimal MedicadeTax;
     public decimal FICATax;
     public decimal MonthlySurvivalBudgetTotal;
     public decimal SurvivalFullYear;
-    public decimal AllBudgetGoalCost;
     public decimal Remainder;
 }
 

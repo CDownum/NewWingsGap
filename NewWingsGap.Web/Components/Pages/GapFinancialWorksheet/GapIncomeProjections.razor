@@ -1,0 +1,66 @@
+﻿@namespace GapIncomeProjections  
+@attribute [StreamRendering(true)]  
+@attribute [OutputCache(Duration = 5)]  
+
+@inject GapApiClient GapApiClient
+
+@if (Budget != null)  
+{
+    <div class="inline" style="display: flex; align-items: center;">
+       <label style="margin-right: 10px;">Year:</label>
+       <select class="form-select" aria-label="Default select example" style="margin-bottom: 10px; width:100px" disabled>
+           <option selected>2025</option>
+       </select>
+    </div>
+    
+
+    <h2>Annual Income Projections</h2>
+
+    <table>
+        <tr>
+            <td><label>Gross Annual Income:</label></td>
+            <td><input @bind="User.GrossAnnualIncome" /></td>
+        </tr>
+        <tr>
+            <td><label>Health Care Contribution:</label></td>
+            <td><input @bind="Budget.HealthCareContribution" /></td>
+        </tr>
+        <tr>
+            <td><label>401K Contribution:</label></td>
+            <td><input @bind="Budget.FourO1KContribution" /></td>
+        </tr>
+        <tr>
+            <td><label>Taxable Income:</label></td>
+            <td><input @bind="Budget.TaxableIncome" /></td>
+        </tr>
+        <tr>
+            <td><label>Net Annual Income:</label></td>
+            <td><input @bind="Budget.NetAnnualIncome" /></td>
+        </tr>
+        <tr>
+            <td><label>Federal Tax:</label></td>
+            <td><input @bind="Budget.FederalTax" />
+            </td>
+        </tr>
+        <tr>
+            <td><label>State Tax:</label></td>
+            <td><input @bind="Budget.StateTax" /></td>
+        </tr>
+        <tr>
+            <td><label>Medicare Tax:</label></td>
+            <td><input @bind="Budget.MedicadeTax" /></td>
+        </tr>
+        <tr>
+            <td><label>FICA Tax:</label></td>
+            <td><input @bind="Budget.FICATax" /></td>
+        </tr>    
+    </table>
+}  
+
+@code {
+    [Parameter]  
+    public Budget? Budget { get; set; }
+
+    [Parameter]
+    public User? User { get; set; }
+}

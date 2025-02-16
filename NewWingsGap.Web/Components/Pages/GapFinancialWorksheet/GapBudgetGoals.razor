@@ -1,0 +1,42 @@
+﻿@namespace BudgetGoals
+@attribute [StreamRendering(true)]
+@attribute [OutputCache(Duration = 5)]
+
+@inject GapApiClient GapApiClient
+
+<h2>Key Goals</h2>
+<table id="0HNAE2QT671G2" class="b-table table table-striped table-bordered table-hover b-datagrid">
+    <thead class="table-thead-theme table-light">
+        <tr>
+            <th scope="col" style="top: 0px; width: 60px">
+                <button id="0HNAE2QT671V4" type="button" class="btn btn-outline-success">New</button>
+            </th>
+            <th scope="col" style="top: 0px; width: 150px" class="cursor-pointer">
+                <div class="d-inline-flex">Description</div>
+            </th>
+            <th scope="col" style="top: 0px; width: 150px" class="cursor-pointer">
+                <div class="d-inline-flex">Amount</div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in BudgetGoals)
+        {
+            <tr class="table-default table-row-selectable">
+                <td style="max-width: 30px">
+                    <div class="gap-2 d-inline-flex" style="max-width: 30px">
+                        <button type="button" class="btn btn-outline-primary">Edit</button>
+                        <button type="button" class="btn btn-outline-danger">Delete</button>
+                    </div>
+                </td>
+                <td data-caption="Description">@item.Description</td>
+                <td class="text-end" data-caption="Amount">@item.Amount.ToString("C")</td>
+            </tr>
+        }   
+    </tbody>
+</table>
+
+@code {  
+    [Parameter]
+    public List<BudgetGoal>? BudgetGoals { get; set; }
+}

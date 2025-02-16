@@ -7,29 +7,54 @@
 
 <PageTitle>GAP Financial Worksheet</PageTitle>
 
-<h1>GAP Financial Worksheet</h1>
-
-<p>This component demonstrates showing data loaded from a backend API service.</p>
-
 @if (budgets == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <div style="display: flex; flex-direction: column;">
-        <BudgetItems />
-        <BudgetGoals />
+    <div class='row position-relative'>
+        <div class='col-6'>
+            <div class='row' style="margin-right: 10px">
+                <div class='col-12'>
+                    <GapIncomeProjections.GapIncomeProjections Budget="@budget" User="@user"/>
+                </div>
+                <div class='col-6 position-absolute bottom-0'>
+                    <GapBudgetGoals BudgetGoals="@budgetGoals" />
+                </div>
+            </div>
+        </div>
+        <div class='col-6'>
+            <div class='row'>
+                <div class='col-12'><GapBudgetItems BudgetItems="@budgetItems" /></div>
+            </div>
+        </div>
     </div>
 }
 
 @code {
     private User? user;
     private Budget[]? budgets;
+    private Budget? budget;
+    private List<BudgetGoal>? budgetGoals;
+    private BudgetItem[]? budgetItems;
 
     protected override async Task OnInitializedAsync()
     {
         user = await GapApiClient.GetUserByIdAsync(1);
         budgets = await GapApiClient.GetBudgetsByUserIdAsync(1);
+
+        budget = budgets?.FirstOrDefault();
+        budgetGoals = budget?.BudgetGoals;
+        budgetItems = budget?.BudgetItems?.ToArray();
+
+        if(budget != null)
+        {
+            budgetGoals?.Add(new BudgetGoal()
+            {
+                Description = "Survival",
+                Amount = budget.MonthlySurvivalBudgetTotal * 12
+            });
+        }       
     }
 }
