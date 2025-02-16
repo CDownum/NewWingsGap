@@ -87,7 +87,7 @@ public enum Role
 public class BudgetItem
 {
     public int Id { get; set; }
-    public string Name { get; set; }
+    public string Description { get; set; }
     public decimal Amount { get; set; }
 }
 
@@ -95,5 +95,5 @@ public class BudgetGoal
 {
     public int Id { get; set; }
     public string Description { get; set; }
-    public decimal TargetAmount { get; set; }
+    public decimal Amount { get; set; }
 }

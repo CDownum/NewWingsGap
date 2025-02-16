@@ -1,0 +1,35 @@
+﻿@page "/gapFinancialWorksheet"
+@using BudgetGoals
+@attribute [StreamRendering(true)]
+@attribute [OutputCache(Duration = 5)]
+
+@inject GapApiClient GapApiClient
+
+<PageTitle>GAP Financial Worksheet</PageTitle>
+
+<h1>GAP Financial Worksheet</h1>
+
+<p>This component demonstrates showing data loaded from a backend API service.</p>
+
+@if (budgets == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div style="display: flex; flex-direction: column;">
+        <BudgetItems />
+        <BudgetGoals />
+    </div>
+}
+
+@code {
+    private User? user;
+    private Budget[]? budgets;
+
+    protected override async Task OnInitializedAsync()
+    {
+        user = await GapApiClient.GetUserByIdAsync(1);
+        budgets = await GapApiClient.GetBudgetsByUserIdAsync(1);
+    }
+}
