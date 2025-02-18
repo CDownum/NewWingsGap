@@ -1,8 +1,9 @@
 ﻿@namespace BudgetGoals
+@using NewWingsGap.Web.ApiClients
 @attribute [StreamRendering(true)]
 @attribute [OutputCache(Duration = 5)]
 
-@inject GapApiClient GapApiClient
+@inject BudgetApiClient GapApiClient
 
 <h2>Monthly Budget - "Survival"</h2>
 <table id="0HNAE2QT671G2" class="b-table table table-striped table-bordered table-hover b-datagrid">
@@ -25,6 +26,7 @@
             <tr class="table-default table-row-selectable">
                 <td>
                     <div class="gap-2 d-inline-flex">
+                        <i class="mdi mdi-pencil" onclick=""></i>
                         <button type="button" class="btn btn-outline-primary">Edit</button>
                         <button type="button" class="btn btn-outline-danger">Delete</button>
                     </div>
@@ -37,9 +39,10 @@
     <tfoot>
         <tr>
             <td>
-                <span class="fw-bold">Totals:</span>
+                <i class="bi bi-arrow-left" style="font-size: 2rem; color: cornflowerblue; font-weight: bold "></i>
+                
             </td>
-            <td></td>
+            <td><span class="fw-bold">12 Months x Monthly Budget:</span></td>
             <td class="text-end" style="width: 140px">@BudgetItems?.Sum(x => x.Amount)</td>
                 
         </tr>

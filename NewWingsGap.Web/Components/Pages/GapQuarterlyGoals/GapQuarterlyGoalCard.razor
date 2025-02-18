@@ -1,0 +1,109 @@
+﻿@namespace GapQuarterlyGoalsSalesNeeded
+@using NewWingsGap.Web.ApiClients
+@using System.Drawing
+@attribute [StreamRendering(true)]
+@attribute [OutputCache(Duration = 5)]
+
+<div class="card" style="max-width: 25rem; font-size:small">
+    <h5 class="card-header" style="background-color: @CardHeaderBackground">@SalesGoalQuarter.QuarterDescription</h5>
+    <div class="card-body">
+        <table class="b-table table table-hover b-datagrid editable">
+            <tbody>            
+                <tr>
+                    <td>Sales source</td>
+                    <td>Sales per Source</td>
+                    <td></td>
+                    <td>Gross Qtr. Sales</td>
+                    <td></td>
+                    <td> % </td>
+                </tr>
+                <tr>
+                    <td>Referral</td>
+                    <td><input type="number" @bind="SalesGoalQuarter.Referral" style="max-width:50px"/></td>
+                    <td> ÷ </td>
+                    <td>@SalesGoalQuarter.GrossSalesNeeded</td>
+                    <td> = </td>
+                    <td> @SalesGoalQuarter.ReferralPercentQuarterSales.ToString("P")</td>
+                </tr>
+                <tr>
+                    <td>Self-Orig.</td>
+                    <td><input type="number" @bind="SalesGoalQuarter.SelfOriginating" style="max-width:50px" /></td>
+                    <td> ÷ </td>
+                    <td>@SalesGoalQuarter.GrossSalesNeeded</td>
+                    <td> = </td>
+                    <td> @SalesGoalQuarter.SelfOriginatingPercentQuarterSales.ToString("P")</td>
+                </tr>
+                <tr>
+                    <td>Internet</td>
+                    <td><input type="number" @bind="SalesGoalQuarter.Internet" style="max-width:50px" /></td>
+                    <td> ÷ </td>
+                    <td>@SalesGoalQuarter.GrossSalesNeeded</td>
+                    <td> = </td>
+                    <td> @SalesGoalQuarter.SelfOriginatingPercentQuarterSales.ToString("P")</td>
+                </tr>
+                <tr>
+                    <td>Realtor</td>
+                    <td><input type="number" @bind="SalesGoalQuarter.Realtor" style="max-width:50px" /></td>
+                    <td> ÷ </td>
+                    <td>@SalesGoalQuarter.GrossSalesNeeded</td>
+                    <td> = </td>
+                    <td> @SalesGoalQuarter.RealtorPercentQuarterSales.ToString("P")</td>
+                </tr>
+                <tr>
+                    <td>Walk-In</td>
+                    <td><input type="number" @bind="SalesGoalQuarter.WalkIn" style="max-width:50px" /></td>
+                    <td> ÷ </td>
+                    <td>@SalesGoalQuarter.GrossSalesNeeded</td>
+                    <td> = </td>
+                    <td> @SalesGoalQuarter.WalkInPercentQuarterSales.ToString("P")</td>
+                </tr>
+                <tr>
+                    <td>Follow-Up</td>
+                    <td><input type="number" @bind="SalesGoalQuarter.FollowUp" style="max-width:50px" /></td>
+                    <td> ÷ </td>
+                    <td>@SalesGoalQuarter.GrossSalesNeeded</td>
+                    <td> = </td>
+                    <td> @SalesGoalQuarter.FollowUpPercentQuarterSales.ToString("P")</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>16</td>
+                    <td />
+                    <td />
+                    <td />
+                    <td> @SalesGoalQuarter.TotalPercent.ToString("P") </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>      
+
+@code {
+
+    [Parameter]
+    public required SalesGoalQuarter SalesGoalQuarter { get; set; }
+
+    string CardHeaderBackground => SalesGoalQuarter.Quarter switch
+    {
+        1 => GreenHex,
+        2 => YellowHex,
+        3 => RedHex,
+        4 => BlueHex,
+        _ => "white"
+    };
+
+    string CardBodyBackground => SalesGoalQuarter.Quarter switch
+    {
+        1 => GreenHex,
+        2 => YellowHex,
+        3 => RedHex,
+        4 => BlueHex,
+        _ => "white"
+    };
+
+    const string GreenHex = "#D2FFD2";
+    const string YellowHex = "#FFFFA2";
+    const string RedHex = "#FFD1D2";
+    const string BlueHex = "#7ED4FF";
+}

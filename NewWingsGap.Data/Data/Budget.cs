@@ -1,27 +1,24 @@
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 [Table("Budgets")]
-public class Budget
-{
-    [Key]
-    public int Id { get; set; }
-
-    [JsonIgnore]
-    public required User User { get; set; }
-
+[PrimaryKey(nameof(Id), nameof(Year))]
+public class Budget : YearEntity
+{ 
     [Required]
-    public int Year { get; set; }
-
-    [Required]
+    [Column(TypeName = "decimal(18,2)")]
     public decimal HealthCareContribution { get; set; }
 
     [Required]
+    [Column(TypeName = "decimal(18,2)")]
     public decimal FourO1KContribution { get; set; }
 
-    public List<BudgetItem>? BudgetItems { get; set; }
-    public List<BudgetGoal>? BudgetGoals { get; set; }
+     [JsonIgnore]
+    public required User User { get; set; }
+    public List<BudgetItem>? BudgetItems { get; set; } = new();
+    public List<BudgetGoal>? BudgetGoals { get; set; } = new();
 
     [NotMapped]
     public decimal TaxableIncome => (User == null ? 0m : User.GrossAnnualIncome) - FourO1KContribution - HealthCareContribution;
@@ -53,4 +50,7 @@ public class Budget
 
     [NotMapped]
     public decimal Remainder => NetAnnualIncome - AllBudgetGoalCost;
+
+    [Required]
+    public DateTime LastModified { get; set; }
 }

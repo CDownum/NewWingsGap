@@ -1,9 +1,10 @@
 ﻿@page "/gapFinancialWorksheet"
 @using BudgetGoals
+@using NewWingsGap.Web.ApiClients
 @attribute [StreamRendering(true)]
 @attribute [OutputCache(Duration = 5)]
 
-@inject GapApiClient GapApiClient
+@inject BudgetApiClient GapApiClient
 
 <PageTitle>GAP Financial Worksheet</PageTitle>
 
@@ -20,7 +21,7 @@ else
                     <GapIncomeProjections.GapIncomeProjections Budget="@budget" User="@user"/>
                 </div>
                 <div class='col-6 position-absolute bottom-0'>
-                    <GapBudgetGoals BudgetGoals="@budgetGoals" />
+                    <GapBudgetGoals BudgetGoals="@budgetGoals" Budget="@budget" />
                 </div>
             </div>
         </div>

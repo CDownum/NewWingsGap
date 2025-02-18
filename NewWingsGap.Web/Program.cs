@@ -2,6 +2,7 @@ using Blazorise;
 using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
 using NewWingsGap.Web;
+using NewWingsGap.Web.ApiClients;
 using NewWingsGap.Web.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,12 +23,26 @@ builder.Services
     .AddBootstrap5Providers()
     .AddFontAwesomeIcons();
 
-builder.Services.AddHttpClient<GapApiClient>(client =>
+builder.Services.AddHttpClient<BudgetApiClient>(client =>
     {
         // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
         // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
         client.BaseAddress = new("https+http://localhost:7377/");
     });
+
+builder.Services.AddHttpClient<UsersApiClient>(client =>
+{
+    // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
+    // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
+    client.BaseAddress = new("https+http://localhost:7377/");
+});
+
+builder.Services.AddHttpClient<QuarterlySalesApiClient>(client =>
+{
+    // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
+    // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
+    client.BaseAddress = new("https+http://localhost:7377/");
+});
 
 var app = builder.Build();
 

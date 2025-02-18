@@ -1,8 +1,9 @@
 ﻿@page "/users"
+@using NewWingsGap.Web.ApiClients
 @attribute [StreamRendering(true)]
 @attribute [OutputCache(Duration = 5)]
 
-@inject GapApiClient GapApiClient
+@inject UsersApiClient GapApiClient
 
 <PageTitle>Users</PageTitle>
 

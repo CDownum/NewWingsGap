@@ -1,8 +1,9 @@
 ﻿@namespace BudgetGoals
+@using NewWingsGap.Web.ApiClients
 @attribute [StreamRendering(true)]
 @attribute [OutputCache(Duration = 5)]
 
-@inject GapApiClient GapApiClient
+@inject BudgetApiClient GapApiClient
 
 <h2>Key Goals</h2>
 <table id="0HNAE2QT671G2" class="b-table table table-striped table-bordered table-hover b-datagrid">
@@ -23,8 +24,8 @@
         @foreach (var item in BudgetGoals)
         {
             <tr class="table-default table-row-selectable">
-                <td style="max-width: 30px">
-                    <div class="gap-2 d-inline-flex" style="max-width: 30px">
+                <td style="min-width: 50px">
+                    <div class="gap-2 d-inline-flex">
                         <button type="button" class="btn btn-outline-primary">Edit</button>
                         <button type="button" class="btn btn-outline-danger">Delete</button>
                     </div>
@@ -36,7 +37,16 @@
     </tbody>
 </table>
 
+<div>
+    <label>Remainder:</label>
+    <label>@Budget.Remainder</label>
+</div>
+
+
 @code {  
     [Parameter]
     public List<BudgetGoal>? BudgetGoals { get; set; }
+
+    [Parameter]
+    public Budget? Budget { get; set; }
 }

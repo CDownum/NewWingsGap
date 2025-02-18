@@ -1,0 +1,56 @@
+﻿@page "/gapQuarterlyGoals"
+@using GapQuarterlyGoalsGrossSales
+@using GapQuarterlyGoalsSalesNeeded
+@using NewWingsGap.Web.ApiClients
+@attribute [StreamRendering(true)]
+@attribute [OutputCache(Duration = 5)]
+
+@inject QuarterlySalesApiClient GapApiClient
+
+<PageTitle>GAP Quarterly Goals</PageTitle>
+
+@if (salesGoal == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class='row position-relative'>
+        <div class='col-12'>
+            <div class='row' style="margin-right: 10px">
+                <div class='col-12'>
+                    <GapQuarterlyGoalsSalesNeeded SalesGoal="@salesGoal"  />
+                </div>
+            </div>
+            <div class='row' style="margin-right: 10px">
+                <div class='col-8' style="float: right">
+                    <GapQuarterlyGoalsGrossSales SalesGoal="@salesGoal" SalesGoalQuarters="@salesGoal.SalesGoalQuarters" />
+                </div>
+            </div>
+            <div class='row' style="margin-right: 10px">
+                <div class='col-12'>
+                    <div class='row'>
+                        @foreach (var quarter in salesGoal.SalesGoalQuarters)
+                        {
+                            <div class='col-12 col-md-6 col-lg-3' style="display:inline-flex">
+                                <GapQuarterlyGoalCard SalesGoalQuarter="@quarter" />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private User? user;
+    private SalesGoal? salesGoal;
+
+    protected override async Task OnInitializedAsync()
+    {
+        user = await GapApiClient.GetUserByIdAsync(1);
+        var goals = await GapApiClient.GetQuarterlySalesByUserIdAsync(1); 
+        salesGoal = goals?.FirstOrDefault();
+    }
+}

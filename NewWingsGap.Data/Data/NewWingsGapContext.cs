@@ -11,6 +11,8 @@ public class NewWingsGapContext : DbContext
     public DbSet<Budget>? Budgets { get; set; }
     public DbSet<BudgetItem>? BudgetItems { get; set; }
     public DbSet<BudgetGoal>? BudgetGoals { get; set; }
+    public DbSet<SalesGoal>? SalesGoals { get; set; }
+    public DbSet<SalesGoalQuarter>? SalesGoalQuarters { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -18,14 +20,14 @@ public class NewWingsGapContext : DbContext
         modelBuilder.Entity<BudgetGoal>().Property(x => x.Amount).HasPrecision(18, 2);
         modelBuilder.Entity<BudgetItem>().Property(x => x.Amount).HasPrecision(18, 2);
 
-        modelBuilder.Entity<Budget>().Property(x => x.FourO1KContribution).HasPrecision(18, 2);
-        modelBuilder.Entity<Budget>().Property(x => x.HealthCareContribution).HasPrecision(18, 2);
         modelBuilder.Entity<User>().Property(x => x.GrossAnnualIncome).HasPrecision(18, 2);
 
         modelBuilder.Entity<User>().ToTable("Users", "dbo");
         modelBuilder.Entity<Budget>().ToTable("Budgets", "dbo");
         modelBuilder.Entity<BudgetItem>().ToTable("BudgetItems", "dbo");
         modelBuilder.Entity<BudgetGoal>().ToTable("BudgetGoals", "dbo");
+        modelBuilder.Entity<SalesGoal>().ToTable("SalesGoals", "dbo");
+        modelBuilder.Entity<SalesGoalQuarter>().ToTable("SalesGoalQuarters", "dbo");
 
         base.OnModelCreating(modelBuilder);
     }

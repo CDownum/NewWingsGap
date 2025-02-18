@@ -1,0 +1,59 @@
+﻿@namespace GapQuarterlyGoalsGrossSales
+@using NewWingsGap.Web.ApiClients
+@using System.Drawing
+@attribute [StreamRendering(true)]
+@attribute [OutputCache(Duration = 5)]
+
+<table class="b-table table table-striped table-bordered table-hover b-datagrid">    
+    <tbody>
+        @foreach (var item in SalesGoalQuarters.OrderBy(x => x.Quarter))
+        {
+            var rowHexColor = string.Empty;
+
+            switch (@item.Quarter)
+            {
+                case 1:
+                    rowHexColor = GreenHex;
+                    break;
+                case 2:
+                    rowHexColor = YellowHex;
+                    break;
+                case 3:
+                    rowHexColor = RedHex;
+                    break;
+                case 4:
+                    rowHexColor = BlueHex;
+                    break;
+            }
+
+            var quarterPercent = (@item.GrossSalesNeeded / @SalesGoal.GrossSalesNeeded);
+                   
+            <span style="display:inline-flex">
+                <label style="background-color: @rowHexColor;
+                                align-content: center; padding: 2px;
+                                width:250px"> @item.QuarterDescription Quarter Gross Sales Needed </label>
+                <input type="number" @bind="item.GrossSalesNeeded" class="form-control" style="max-width:100px" />
+                <span class="align-content-center" style="margin-left: 5px; margin-right:5px"> ÷ </span>
+                <input type="number" @bind="SalesGoal.GrossSalesNeeded" class="form-control" disabled style="max-width:100px" />
+                <span class="align-content-center" style="margin-left: 5px; margin-right:5px"> = </span>
+                <label style="align-content: center; padding: 2px;">@quarterPercent.ToString("P")</label>
+                <label style="align-content: center; padding: 2px; margin-left: 10px;">Percent @item.QuarterDescription Quarter Sales</label>
+            </span>  
+
+        }
+    </tbody>    
+</table>
+
+@code {
+
+    [Parameter]
+    public SalesGoal SalesGoal { get; set; }
+
+    [Parameter]
+    public List<SalesGoalQuarter> SalesGoalQuarters { get; set; }
+
+    const string GreenHex = "#D2FFD2";
+    const string YellowHex = "#FFFFA2";
+    const string RedHex = "#FFD1D2";
+    const string BlueHex = "#7ED4FF";
+}

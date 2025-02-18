@@ -1,0 +1,24 @@
+﻿@namespace GapQuarterlyGoalsSalesNeeded
+@using NewWingsGap.Web.ApiClients
+@using System.Drawing
+@attribute [StreamRendering(true)]
+@attribute [OutputCache(Duration = 5)]
+
+<div style="display:inline-block">
+<div style="display:inline-flex; margin-bottom: 10px">
+    <input type="number" @bind="SalesGoal.AverageSalesPrice" class="form-control" style="max-width:150px" />
+    <label style="align-content:center; margin-left: 5px"> Average Sales Price </label>
+    
+</div>
+
+<div style="display:inline-flex; margin-bottom: 10px">
+    <input type="number" @bind="SalesGoal.CommissionRate" class="form-control" style="max-width:150px" />
+    <label style="align-content:center; margin-left: 5px"> Commission Rate </label>
+</div>
+</div>
+
+@code {
+
+    [Parameter]
+    public SalesGoal SalesGoal { get; set; }
+}

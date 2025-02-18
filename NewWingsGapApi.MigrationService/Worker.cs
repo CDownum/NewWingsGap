@@ -73,17 +73,18 @@ public class Worker(
             FirstName = "Charles",
             MiddleName = "Michael",
             LastName = "Downum",
-            GrossAnnualIncome = 100000
+            GrossAnnualIncome = 100000,
+            ReportingManager = "Steve Rigby",
+            Salaried = true, 
+            Email = "charles.downum@example.com"
         };
-
         Budget budget = new()
         {
             User = user,
             Year = DateTime.Now.Year,
             HealthCareContribution = 1000,
             FourO1KContribution = 1000
-        };
-        
+        };        
         var budgetItems = new List<BudgetItem>
         {
             new() {
@@ -107,12 +108,6 @@ public class Worker(
             new() {
                 Amount = 750,
                 Description = "Auto Loan(s)",
-                LastModified = DateTime.Now,
-                Budget = budget
-            },
-            new() {
-                Amount = 800,
-                Description = "Utilities",
                 LastModified = DateTime.Now,
                 Budget = budget
             },
@@ -177,7 +172,7 @@ public class Worker(
                 Budget = budget
             },
             new() {
-                Amount = 200,
+                Amount = 100,
                 Description = "Memberships",
                 LastModified = DateTime.Now,
                 Budget = budget
@@ -195,7 +190,6 @@ public class Worker(
                 Budget = budget
             }
         };
-
         var budgetGoals = new List<BudgetGoal>()
         {
             new() {
@@ -223,6 +217,75 @@ public class Worker(
                 Budget = budget
             },
         };
+        var salesGoals = new List<SalesGoal>() {
+            new() {
+                Year = DateTime.Now.Year,
+                AverageSalesPrice = 250000,
+                CommissionRate = 1.75m,
+                AverageCommision = 43750m,
+                AverageLossRatio = 11.54m,
+                NetSalesClosed = 88.46m,
+                NetSalesNeeded = 45.714m,
+                GrossSalesNeeded = 52,
+                LastModified = DateTime.Now,
+                User = user
+            }
+        };
+        var salesGoalQuarters = new List<SalesGoalQuarter>()
+        {
+            new() {
+                Quarter = 1,
+                GrossSalesNeeded = 16,
+                Referral = 4,
+                SelfOriginating = 3,
+                Internet = 1,
+                Realtor = 4,
+                WalkIn = 2,
+                FollowUp = 2,
+                LastModified = DateTime.Now,
+                SalesGoalId = salesGoals.First().Id,
+                SalesGoal = salesGoals.First()
+            },
+            new() {
+                Quarter = 2,
+                GrossSalesNeeded = 14,
+                Referral = 4,
+                SelfOriginating = 3,
+                Internet = 1,
+                Realtor = 3,
+                WalkIn = 1,
+                FollowUp = 2,
+                LastModified = DateTime.Now,
+                SalesGoalId = salesGoals.First().Id,
+                SalesGoal = salesGoals.First()
+            },
+            new() {
+                Quarter = 3,
+                GrossSalesNeeded = 12,
+                Referral = 4,
+                SelfOriginating = 3,
+                Internet = 1,
+                Realtor = 2,
+                WalkIn = 1,
+                FollowUp = 1,
+                LastModified = DateTime.Now,
+                SalesGoalId = salesGoals.First().Id,
+                SalesGoal = salesGoals.First()
+            },
+            new() {
+                Quarter = 4,
+                GrossSalesNeeded = 10,
+                Referral = 4,
+                SelfOriginating = 3,
+                Internet = 1,
+                Realtor = 1,
+                WalkIn = 0,
+                FollowUp = 1,
+                LastModified = DateTime.Now, 
+                SalesGoalId = salesGoals.First().Id,
+                SalesGoal = salesGoals.First()
+            }
+        };
 
         var strategy = dbContext.Database.CreateExecutionStrategy();
         await strategy.ExecuteAsync(async () =>
@@ -232,7 +295,7 @@ public class Worker(
             await dbContext.Users.AddAsync(user, cancellationToken);
             await dbContext.Budgets!.AddAsync(budget, cancellationToken);
 
-            foreach(var budgetItem in budgetItems)
+            foreach (var budgetItem in budgetItems)
             {
                 await dbContext.BudgetItems!.AddAsync(budgetItem, cancellationToken);
             }
@@ -240,6 +303,16 @@ public class Worker(
             foreach (var budgetGoal in budgetGoals)
             {
                 await dbContext.BudgetGoals!.AddAsync(budgetGoal, cancellationToken);
+            }
+
+            foreach (var salesGoal in salesGoals)
+            {
+                await dbContext.SalesGoals!.AddAsync(salesGoal, cancellationToken);
+            }
+
+            foreach (var salesGoalQuarter in salesGoalQuarters)
+            {
+                await dbContext.SalesGoalQuarters!.AddAsync(salesGoalQuarter, cancellationToken);
             }
 
             await dbContext.SaveChangesAsync(cancellationToken);
